@@ -1,5 +1,8 @@
+import { useState } from "react";
 import styles from "./styles.module.scss";
 
-export default function Scene() {
-  return <div className={styles.container}>Aq</div>;
+export default function Worm() {
+  const [wormSize, setWormSize] = useState(1);
+
+  return <div className={styles.worm}></div>;
 }

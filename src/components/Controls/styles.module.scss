@@ -2,11 +2,17 @@
 @import "src/styles/abstracts/typography.scss";
 @import "src/styles/abstracts/variables.scss";
 
-.scene {
-  position: relative;
-  height: 100vh;
-  width: 100vw;
+.container {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
 
-  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: $spacing;
+
   color: $color-white;
+
+  padding: $spacing;
 }

@@ -2,5 +2,11 @@
 @import "src/styles/abstracts/typography.scss";
 @import "src/styles/abstracts/variables.scss";
 
-.worm {
+.food {
+  height: auto;
+  position: absolute;
+
+  background-color: $color-white;
+
+  aspect-ratio: 1 / 1;
 }

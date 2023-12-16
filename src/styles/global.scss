@@ -1,5 +1,15 @@
+@import "./abstracts/variables.scss";
+
 * {
   box-sizing: border-box;
+
+  font-family: "sans-serif";
+}
+
+body {
+  overflow: hidden;
+
+  background-color: $color-black-700;
 }
 
 body,
