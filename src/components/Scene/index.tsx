@@ -3,6 +3,7 @@ import { FoodType } from "../../types";
 import { getLocalJson, getRandomToken, setLocalJson } from "../../utils";
 import Controls from "../Controls";
 import Food from "../Food";
+import Worm from "../Worm";
 import styles from "./styles.module.scss";
 
 export default function Scene() {
@@ -85,6 +86,7 @@ export default function Scene() {
         className={styles.scene}
         style={{ marginLeft: `-${left}px`, marginTop: `-${top}px` }}
       >
+        <Worm size={blockSize} />
         <Food
           size={blockSize}
           foods={foods}

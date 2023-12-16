@@ -3,4 +3,14 @@
 @import "src/styles/abstracts/variables.scss";
 
 .worm {
+  position: relative;
+}
+
+.wormBody {
+  position: absolute;
+
+  height: auto;
+  aspect-ratio: 1 / 1;
+
+  background-color: $color-primary;
 }

@@ -20,3 +20,8 @@ export type ControlProps = {
   screen: Screen;
   screens: any;
 };
+
+// Worm types
+export type WormProps = {
+  size: number;
+};
