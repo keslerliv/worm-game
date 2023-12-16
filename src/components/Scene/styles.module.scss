@@ -1,0 +1,10 @@
+@import "src/styles/abstracts/breakpoints.scss";
+@import "src/styles/abstracts/typography.scss";
+@import "src/styles/abstracts/variables.scss";
+
+.container {
+  height: 100vh;
+  width: 100vw;
+
+  background-color: $color-black-700;
+}
