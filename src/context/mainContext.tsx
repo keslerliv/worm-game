@@ -99,6 +99,14 @@ export function MainProvider({ children }: MainProviderProps) {
     setFoods(newFood);
   };
 
+  const addNewBlock = () => {
+    const newWormBody = wormBody;
+    newWormBody.push([-10, -10]);
+
+    setLocalJson("worm", newWormBody);
+    setWormBody(newWormBody);
+  };
+
   // reset screens local storage
   useEffect(() => {
     localStorage.setItem("start", "");
@@ -144,6 +152,7 @@ export function MainProvider({ children }: MainProviderProps) {
         setFoods(cleanFoods);
 
         addNewFood(cleanFoods);
+        addNewBlock();
       }
     };
 
