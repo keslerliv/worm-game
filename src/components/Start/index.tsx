@@ -3,7 +3,7 @@ import { useMainContext } from "../../context/mainContext";
 import styles from "./styles.module.scss";
 
 export default function StartModal() {
-  const { startGame, docRef } = useMainContext();
+  const { startGame, docRef, isRoot } = useMainContext();
 
   const startHandle = () => {
     startGame();

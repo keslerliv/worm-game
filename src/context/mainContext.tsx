@@ -112,6 +112,12 @@ export function MainProvider({ children }: MainProviderProps) {
     setWormBody(newWormBody);
   };
 
+  const isRoot = useCallback(() => {
+    const starter = localStorage.getItem("starter");
+    if (starter === screenToken.toString()) return true;
+    return false;
+  }, []);
+
   // reset screens local storage
   useEffect(() => {
     localStorage.setItem("start", "");
@@ -232,6 +238,7 @@ export function MainProvider({ children }: MainProviderProps) {
       vertical,
       status,
       docRef,
+      isRoot,
       startGame,
       foods,
       getScreens,
@@ -246,6 +253,7 @@ export function MainProvider({ children }: MainProviderProps) {
       vertical,
       status,
       docRef,
+      isRoot,
       startGame,
       foods,
       getScreens,

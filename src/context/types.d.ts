@@ -12,6 +12,7 @@ export type MainContextProps = {
   vertical: number;
   status: Status;
   docRef: any;
+  isRoot: () => any;
   startGame: any;
   foods: any;
   getScreens: () => any;
