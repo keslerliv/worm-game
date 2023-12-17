@@ -15,6 +15,7 @@ import {
   getRandomToken,
   isWormEating,
   setLocalJson,
+  verifyMove,
 } from "../utils";
 import { MainContextProps, MainProviderProps } from "./types";
 
@@ -138,6 +139,9 @@ export function MainProvider({ children }: MainProviderProps) {
         setLocalJson("worm", newBody);
         setWormBody(newBody);
       }
+
+      // verify is valid move
+      verifyMove(wormBody, screens, blockSize);
 
       // add worm eat action
       const cleanFoods: number[][] = [...foods];

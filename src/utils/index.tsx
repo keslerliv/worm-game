@@ -29,12 +29,12 @@ export function getRandomFoodPosition(screens: Screens, size: number) {
 
     locations.push([
       [
-        Math.round(screen.left / size),
-        Math.round(screen.left / size) + screen.horizontal,
+        Math.round(screen.left / size) + 1,
+        Math.round(screen.left / size) + screen.horizontal - 1,
       ],
       [
-        Math.round(screen.top / size),
-        Math.round(screen.top / size) + screen.vertical,
+        Math.round(screen.top / size) + 1,
+        Math.round(screen.top / size) + screen.vertical - 1,
       ],
     ]);
   });
@@ -88,6 +88,57 @@ export function addWormMove(body: WormBody, direction: Direction) {
   });
 
   return newBody;
+}
+
+export function verifyMove(body: WormBody, screens: Screens, size: number) {
+  // validate self body
+  body.some((item, index) => {
+    if (item[0] === body[0][0] && item[1] === body[0][1] && index !== 0)
+      return false;
+  });
+
+  // validate is out of max screen limit
+  const keys = Object.keys(screens);
+
+  let maxLeft = 0;
+  let maxRight = 0;
+  let maxTop = 0;
+  let maxBottom = 0;
+
+  keys.forEach((key, index) => {
+    const screen = screens[key];
+    if (screen?.left && screen?.top && screen?.horizontal && screen?.vertical) {
+      if (Math.round(screen.left / size) < maxLeft || index === 0)
+        maxLeft = Math.round(screen.left / size);
+
+      if (
+        Math.round(screen.left / size + screen.horizontal) > maxRight ||
+        index === 0
+      )
+        maxRight = Math.round(screen.left / size + screen.horizontal);
+
+      if (Math.round(screen.top / size) < maxTop || index === 0)
+        maxTop = Math.round(screen.top / size);
+
+      if (
+        Math.round(screen.top / size + screen.vertical) > maxBottom ||
+        index === 0
+      )
+        maxBottom = Math.round(screen.top / size + screen.vertical);
+    }
+  });
+
+  if (body.length > 0) {
+    if (body[0][0] < maxLeft) console.log("perdeu");
+
+    if (body[0][0] > maxRight) console.log("perdeu");
+
+    if (body[0][1] < maxTop) console.log("perdeu");
+
+    if (body[0][1] > maxBottom) console.log("perdeu");
+  }
+
+  return true;
 }
 
 export function isWormEating(body: WormBody, foods: FoodType[]) {
