@@ -1,5 +1,4 @@
 import { useMainContext } from "../../context/mainContext";
-import Controls from "../Controls";
 import GameOver from "../GameOver";
 import StartModal from "../Start";
 import Food from "./components/Food";
@@ -20,8 +19,6 @@ export default function Scene() {
       {status === "gameOver" && <GameOver />}
 
       {status === "start" && <StartModal />}
-
-      {status === "playing" && <Controls />}
 
       <div
         className={styles.scene}

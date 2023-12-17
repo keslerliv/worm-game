@@ -3,7 +3,7 @@ import { useMainContext } from "../../context/mainContext";
 import styles from "./styles.module.scss";
 
 export default function GameOver() {
-  const { startGame, docRef, isRoot } = useMainContext();
+  const { startGame, wormBody, docRef, isRoot } = useMainContext();
 
   const reloadHandle = () => {
     startGame();
@@ -12,8 +12,8 @@ export default function GameOver() {
 
   return (
     <div className={styles.container}>
-      <h1>Você perdeu!</h1>
-
+      <h1>GAME OVER!</h1>
+      <p>Score: {wormBody.length}</p>
       {isRoot() && <button onClick={reloadHandle}>Começar de novo</button>}
     </div>
   );

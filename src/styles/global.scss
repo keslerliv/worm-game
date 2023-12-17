@@ -1,9 +1,12 @@
 @import "./abstracts/variables.scss";
+@import "./abstracts/typography.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
 
 * {
   box-sizing: border-box;
 
-  font-family: "sans-serif";
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
@@ -29,8 +32,27 @@ pre {
   margin: 0;
 }
 
+p {
+  font-size: $font-size-b1;
+}
+
 button {
+  padding: $spacing $spacing-outter;
+  border-radius: 10px;
+  border: none;
+  transition: 0.3s;
+  background-color: $color-primary;
+  cursor: pointer;
+
   font-family: inherit;
+  font-size: $font-size-b1;
+  font-weight: $font-weight-semibold;
+  color: $color-white;
+
+  &:hover {
+    background-color: $color-white;
+    color: $color-primary;
+  }
 
   &:focus {
     outline: none;

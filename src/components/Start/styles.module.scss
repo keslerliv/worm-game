@@ -17,4 +17,8 @@
   text-align: center;
 
   background-color: $color-secondary;
+
+  img {
+    margin: $spacing;
+  }
 }
