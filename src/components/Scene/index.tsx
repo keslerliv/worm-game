@@ -8,17 +8,7 @@ import Worm from "./components/Worm";
 import styles from "./styles.module.scss";
 
 export default function Scene() {
-  const {
-    blockSize,
-    left,
-    top,
-    horizontal,
-    status,
-    docRef,
-    getScreens,
-    vertical,
-    changeDirectionHandle,
-  } = useMainContext();
+  const { left, top, status, docRef, changeDirectionHandle } = useMainContext();
 
   return (
     <div
@@ -31,15 +21,8 @@ export default function Scene() {
 
       {status === "start" && <StartModal />}
 
-      <Controls
-        screens={getScreens}
-        screen={{
-          horizontal,
-          vertical,
-          left: left / blockSize,
-          top: top / blockSize,
-        }}
-      />
+      {status === "playing" && <Controls />}
+
       <div
         className={styles.scene}
         style={{ marginLeft: `-${left}px`, marginTop: `-${top}px` }}

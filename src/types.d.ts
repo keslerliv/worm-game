@@ -13,12 +13,6 @@ export type Screen = {
 
 export type FoodType = number[];
 
-// Control types
-export type ControlProps = {
-  screen: Screen;
-  screens: any;
-};
-
 // Worm types
 export type WormBody = number[][];
 
