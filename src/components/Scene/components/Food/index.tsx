@@ -16,7 +16,7 @@ export default function Food() {
             top: `${food[1] * blockSize}px`,
           }}
           className={styles.food}
-        ></div>
+        />
       ))}
     </div>
   );

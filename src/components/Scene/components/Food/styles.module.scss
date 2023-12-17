@@ -6,7 +6,8 @@
   height: auto;
   position: absolute;
 
-  background-color: $color-white;
-
   aspect-ratio: 1 / 1;
+
+  border-radius: 7px;
+  background-color: $color-secondary;
 }

@@ -3,6 +3,7 @@
 @import "src/styles/abstracts/variables.scss";
 
 .worm {
+  z-index: 5;
   position: relative;
 }
 

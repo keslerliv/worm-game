@@ -16,7 +16,7 @@ export default function Worm() {
           }}
           className={styles.wormBody}
           key={index}
-        ></div>
+        />
       ))}
     </div>
   );
