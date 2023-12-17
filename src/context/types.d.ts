@@ -1,3 +1,5 @@
+import { Status } from "../types";
+
 export type MainProviderProps = {
   children: import("react").ReactNode;
 };
@@ -8,6 +10,8 @@ export type MainContextProps = {
   top: number;
   horizontal: number;
   vertical: number;
+  status: Status;
+  docRef: any;
   startGame: any;
   foods: any;
   getScreens: () => any;

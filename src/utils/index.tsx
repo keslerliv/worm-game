@@ -92,10 +92,13 @@ export function addWormMove(body: WormBody, direction: Direction) {
 
 export function verifyMove(body: WormBody, screens: Screens, size: number) {
   // validate self body
+  let status = true;
   body.some((item, index) => {
     if (item[0] === body[0][0] && item[1] === body[0][1] && index !== 0)
-      return false;
+      status = false;
   });
+
+  if (!status) return false;
 
   // validate is out of max screen limit
   const keys = Object.keys(screens);
@@ -129,13 +132,13 @@ export function verifyMove(body: WormBody, screens: Screens, size: number) {
   });
 
   if (body.length > 0) {
-    if (body[0][0] < maxLeft) console.log("perdeu");
+    if (body[0][0] < maxLeft) return false;
 
-    if (body[0][0] > maxRight) console.log("perdeu");
+    if (body[0][0] > maxRight) return false;
 
-    if (body[0][1] < maxTop) console.log("perdeu");
+    if (body[0][1] < maxTop) return false;
 
-    if (body[0][1] > maxBottom) console.log("perdeu");
+    if (body[0][1] > maxBottom) return false;
   }
 
   return true;

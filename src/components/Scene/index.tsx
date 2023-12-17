@@ -1,5 +1,7 @@
 import { useMainContext } from "../../context/mainContext";
 import Controls from "../Controls";
+import GameOver from "../GameOver";
+import StartModal from "../Start";
 import Food from "./components/Food";
 import Worm from "./components/Worm";
 
@@ -11,6 +13,8 @@ export default function Scene() {
     left,
     top,
     horizontal,
+    status,
+    docRef,
     getScreens,
     vertical,
     changeDirectionHandle,
@@ -18,10 +22,15 @@ export default function Scene() {
 
   return (
     <div
+      ref={docRef}
       className={styles.container}
       onKeyDown={changeDirectionHandle}
       tabIndex={0}
     >
+      {status === "gameOver" && <GameOver />}
+
+      {status === "start" && <StartModal />}
+
       <Controls
         screens={getScreens}
         screen={{

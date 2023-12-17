@@ -6,8 +6,9 @@ import {
   useEffect,
   useCallback,
   KeyboardEvent,
+  useRef,
 } from "react";
-import { Direction, FoodType, Screens, WormBody } from "../types";
+import { Direction, FoodType, Screens, Status, WormBody } from "../types";
 import {
   addWormMove,
   getLocalJson,
@@ -25,8 +26,10 @@ export const MainContext = createContext({} as MainContextProps);
 
 export function MainProvider({ children }: MainProviderProps) {
   const blockSize = 30;
+  const docRef = useRef(null);
 
   // scene options
+  const [status, setStatus] = useState<Status>("start");
   const [screens, setScreens] = useState<Screens>({});
   const [left, setLeft] = useState(Math.round(window.screenX));
   const [top, setTop] = useState(Math.round(window.screenY));
@@ -59,6 +62,9 @@ export function MainProvider({ children }: MainProviderProps) {
       [11, 10],
       [10, 10],
     ];
+
+    localStorage.setItem("status", "playing");
+    setStatus("playing");
 
     localStorage.setItem("starter", screenToken.toString());
 
@@ -113,6 +119,7 @@ export function MainProvider({ children }: MainProviderProps) {
     localStorage.setItem("start", "");
     localStorage.setItem("screens", "{}");
     localStorage.setItem("worm", "[]");
+    localStorage.setItem("status", "start");
   }, []);
 
   /**
@@ -141,7 +148,13 @@ export function MainProvider({ children }: MainProviderProps) {
       }
 
       // verify is valid move
-      verifyMove(wormBody, screens, blockSize);
+      const isValid = verifyMove(wormBody, screens, blockSize);
+      if (!isValid) {
+        setMoveDirection("right");
+
+        setStatus("gameOver");
+        localStorage.setItem("status", "gameOver");
+      }
 
       // add worm eat action
       const cleanFoods: number[][] = [...foods];
@@ -194,6 +207,10 @@ export function MainProvider({ children }: MainProviderProps) {
       setFoods(getLocalJson("foods") ?? []);
       setWormBody(getLocalJson("worm") ?? []);
 
+      const status = localStorage.getItem("status");
+      if (status === "gameOver" || status === "start" || status === "playing")
+        setStatus(status);
+
       const newScreens = getLocalJson("screens");
       newScreens[screenToken] = screens[screenToken];
 
@@ -215,6 +232,8 @@ export function MainProvider({ children }: MainProviderProps) {
       top,
       horizontal,
       vertical,
+      status,
+      docRef,
       startGame,
       foods,
       getScreens,
@@ -227,6 +246,8 @@ export function MainProvider({ children }: MainProviderProps) {
       top,
       horizontal,
       vertical,
+      status,
+      docRef,
       startGame,
       foods,
       getScreens,

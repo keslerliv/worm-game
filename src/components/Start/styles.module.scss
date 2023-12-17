@@ -1,0 +1,20 @@
+@import "src/styles/abstracts/breakpoints.scss";
+@import "src/styles/abstracts/typography.scss";
+@import "src/styles/abstracts/variables.scss";
+
+.container {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-gap;
+
+  color: $color-white;
+  text-align: center;
+
+  background-color: $color-secondary;
+}
