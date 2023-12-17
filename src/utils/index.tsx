@@ -102,33 +102,31 @@ export function verifyMove(body: WormBody, screens: Screens, size: number) {
 
   // validate is out of max screen limit
   const keys = Object.keys(screens);
+  const starter = localStorage.getItem("starter") ?? "";
 
-  let maxLeft = 0;
-  let maxRight = 0;
-  let maxTop = 0;
-  let maxBottom = 0;
+  let maxLeft = Math.round(screens[starter]?.left / size);
+  let maxRight = Math.round(
+    screens[starter]?.left / size + screens[starter]?.horizontal
+  );
+  let maxTop = Math.round(screens[starter]?.top / size);
+  let maxBottom = Math.round(
+    screens[starter]?.top / size + screens[starter]?.vertical
+  );
 
   keys.forEach((key, index) => {
     const screen = screens[key];
-    if (screen?.left && screen?.top && screen?.horizontal && screen?.vertical) {
-      if (Math.round(screen.left / size) < maxLeft || index === 0)
-        maxLeft = Math.round(screen.left / size);
 
-      if (
-        Math.round(screen.left / size + screen.horizontal) > maxRight ||
-        index === 0
-      )
-        maxRight = Math.round(screen.left / size + screen.horizontal);
+    if (Math.round(screen?.left / size) < maxLeft)
+      maxLeft = Math.round(screen?.left / size);
 
-      if (Math.round(screen.top / size) < maxTop || index === 0)
-        maxTop = Math.round(screen.top / size);
+    if (Math.round(screen?.left / size + screen?.horizontal) > maxRight)
+      maxRight = Math.round(screen?.left / size + screen?.horizontal);
 
-      if (
-        Math.round(screen.top / size + screen.vertical) > maxBottom ||
-        index === 0
-      )
-        maxBottom = Math.round(screen.top / size + screen.vertical);
-    }
+    if (Math.round(screen?.top / size) < maxTop)
+      maxTop = Math.round(screen?.top / size);
+
+    if (Math.round(screen?.top / size + screen?.vertical) > maxBottom)
+      maxBottom = Math.round(screen?.top / size + screen?.vertical);
   });
 
   if (body.length > 0) {

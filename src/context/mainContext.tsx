@@ -95,22 +95,22 @@ export function MainProvider({ children }: MainProviderProps) {
     [moveDirection]
   );
 
-  const addNewFood = (foods: FoodType[]) => {
-    const newFood: number[][] = foods;
+  const addNewFood = useCallback(
+    (foods: FoodType[]) => {
+      const newFood: number[][] = foods;
+      newFood.push(getRandomFoodPosition(screens, blockSize));
+      setLocalJson("foods", newFood);
+      setFoods(newFood);
+    },
+    [screens]
+  );
 
-    newFood.push(getRandomFoodPosition(screens, blockSize));
-
-    setLocalJson("foods", newFood);
-    setFoods(newFood);
-  };
-
-  const addNewBlock = () => {
+  const addNewBlock = useCallback(() => {
     const newWormBody = wormBody;
     newWormBody.push([-10, -10]);
-
     setLocalJson("worm", newWormBody);
     setWormBody(newWormBody);
-  };
+  }, [wormBody]);
 
   const isRoot = useCallback(() => {
     const starter = localStorage.getItem("starter");
@@ -226,7 +226,7 @@ export function MainProvider({ children }: MainProviderProps) {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []);
+  }, [screens]);
 
   // build return values
   const contextValue = useMemo(
