@@ -8,7 +8,7 @@ import {
   KeyboardEvent,
   useRef,
 } from "react";
-import { Direction, FoodType, Screens, Status, WormBody } from "../types";
+
 import {
   addWormMove,
   getLocalJson,
@@ -19,6 +19,7 @@ import {
   verifyMove,
 } from "../utils";
 import { MainContextProps, MainProviderProps } from "./types";
+import { Direction, FoodType, Screens, Status, WormBody } from "../types";
 
 const screenToken = getRandomToken();
 
@@ -47,25 +48,25 @@ export function MainProvider({ children }: MainProviderProps) {
   // food options
   const [foods, setFoods] = useState<FoodType[]>([]);
 
-  // return current screen and localStorage screens
-  const getScreens = useCallback(() => {
-    return screens;
-  }, [screens]);
-
   const startGame = useCallback(() => {
     const foodPositions = [
       getRandomFoodPosition(screens, blockSize),
       getRandomFoodPosition(screens, blockSize),
     ];
+
+    // define start worm body
+    const startWormX = Math.round(screens[screenToken].left / blockSize);
+    const startWormY = Math.round(screens[screenToken].top / blockSize);
     const wormBody = [
-      [12, 10],
-      [11, 10],
-      [10, 10],
+      [startWormX + 7, startWormY + 7],
+      [startWormX + 6, startWormY + 7],
+      [startWormX + 5, startWormY + 7],
     ];
 
     localStorage.setItem("status", "playing");
     setStatus("playing");
 
+    // set main screen
     localStorage.setItem("starter", screenToken.toString());
 
     setLocalJson("worm", wormBody);
@@ -73,8 +74,6 @@ export function MainProvider({ children }: MainProviderProps) {
 
     setLocalJson("foods", foodPositions);
     setFoods(foodPositions);
-
-    return screens;
   }, [screens]);
 
   const changeDirectionHandle = useCallback(
@@ -112,6 +111,7 @@ export function MainProvider({ children }: MainProviderProps) {
     setWormBody(newWormBody);
   }, [wormBody]);
 
+  // verify if is root screen
   const isRoot = useCallback(() => {
     const starter = localStorage.getItem("starter");
     if (starter === screenToken.toString()) return true;
@@ -126,9 +126,7 @@ export function MainProvider({ children }: MainProviderProps) {
     localStorage.setItem("status", "start");
   }, []);
 
-  /**
-   * change view size on resize screen
-   */
+  // change view size on resize screen
   useEffect(() => {
     window.addEventListener("resize", () => {
       // set new sizes
@@ -137,9 +135,7 @@ export function MainProvider({ children }: MainProviderProps) {
     });
   }, [horizontal, vertical]);
 
-  /**
-   * add worm move by time
-   */
+  // add worm move by time
   useEffect(() => {
     const wormCallback = () => {
       const starter = localStorage.getItem("starter");
@@ -184,9 +180,7 @@ export function MainProvider({ children }: MainProviderProps) {
     };
   }, [wormBody, foods, moveDirection]);
 
-  /**
-   * change view position by time
-   */
+  // change view position by time
   useEffect(() => {
     const updateWindowPosition = () => {
       setLeft(Math.round(window.screenX));
@@ -198,7 +192,7 @@ export function MainProvider({ children }: MainProviderProps) {
       setLocalJson("screens", screens);
     };
 
-    const intervalId = setInterval(updateWindowPosition, 10);
+    const intervalId = setInterval(updateWindowPosition, 50);
 
     return () => {
       clearInterval(intervalId);
@@ -241,7 +235,7 @@ export function MainProvider({ children }: MainProviderProps) {
       isRoot,
       startGame,
       foods,
-      getScreens,
+      screens,
       wormBody,
       changeDirectionHandle,
     }),
@@ -256,7 +250,7 @@ export function MainProvider({ children }: MainProviderProps) {
       isRoot,
       startGame,
       foods,
-      getScreens,
+      screens,
       wormBody,
       changeDirectionHandle,
     ]

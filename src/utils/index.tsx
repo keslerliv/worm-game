@@ -1,5 +1,8 @@
 import { Direction, WormBody, FoodType, Screens } from "../types";
 
+/**
+ * local storage
+ */
 export function getLocalJson(item: string) {
   const data = localStorage.getItem(item);
 
@@ -14,11 +17,9 @@ export function setLocalJson(item: string, value: any) {
   localStorage.setItem(item, JSON.stringify(value));
 }
 
-export function getRandomToken() {
-  const random = Math.floor(Math.random() * 100000);
-  return random.toString();
-}
-
+/**
+ * food auxiar functions
+ */
 export function getRandomFoodPosition(screens: Screens, size: number) {
   const keys = Object.keys(screens);
 
@@ -26,7 +27,6 @@ export function getRandomFoodPosition(screens: Screens, size: number) {
 
   keys.forEach((item) => {
     const screen = screens[item];
-
     locations.push([
       [
         Math.round(screen.left / size) + 1,
@@ -44,30 +44,13 @@ export function getRandomFoodPosition(screens: Screens, size: number) {
   return getRandomPosition(location);
 }
 
-function getRandomPosition(intervals: number[][]): number[] {
-  const randomNumbers: number[] = [];
-
-  for (const interval of intervals) {
-    const [min, max] = interval;
-    const randomNumber = Math.random() * (max - min) + min;
-    randomNumbers.push(Math.round(randomNumber - 1));
-  }
-
-  return randomNumbers;
-}
-
-function getRandomArrayItem(array: any[]) {
-  if (array.length === 0) {
-    return undefined;
-  }
-
-  const randomIndice = Math.floor(Math.random() * array.length);
-  return array[randomIndice];
-}
-
+/**
+ * worm auxiar functions
+ */
 export function addWormMove(body: WormBody, direction: Direction) {
   let newBody: WormBody = [];
 
+  // verify worm direction and set move
   body.forEach((element, index) => {
     if (index === 0) {
       if (direction === "right") {
@@ -113,29 +96,24 @@ export function verifyMove(body: WormBody, screens: Screens, size: number) {
     screens[starter]?.top / size + screens[starter]?.vertical
   );
 
+  // re-set max values
   keys.forEach((key, index) => {
     const screen = screens[key];
-
     if (Math.round(screen?.left / size) < maxLeft)
       maxLeft = Math.round(screen?.left / size);
-
     if (Math.round(screen?.left / size + screen?.horizontal) > maxRight)
       maxRight = Math.round(screen?.left / size + screen?.horizontal);
-
     if (Math.round(screen?.top / size) < maxTop)
       maxTop = Math.round(screen?.top / size);
-
     if (Math.round(screen?.top / size + screen?.vertical) > maxBottom)
       maxBottom = Math.round(screen?.top / size + screen?.vertical);
   });
 
+  // verify by max values
   if (body.length > 0) {
     if (body[0][0] < maxLeft) return false;
-
     if (body[0][0] > maxRight) return false;
-
     if (body[0][1] < maxTop) return false;
-
     if (body[0][1] > maxBottom) return false;
   }
 
@@ -150,6 +128,35 @@ export function isWormEating(body: WormBody, foods: FoodType[]) {
     });
     return value;
   }
-
   return false;
+}
+
+/**
+ * utils
+ */
+export function getRandomToken() {
+  const random = Math.floor(Math.random() * 100000);
+  return random.toString();
+}
+
+function getRandomArrayItem(array: any[]) {
+  if (array.length === 0) {
+    return undefined;
+  }
+
+  const randomIndice = Math.floor(Math.random() * array.length);
+  return array[randomIndice];
+}
+
+function getRandomPosition(intervals: number[][]): number[] {
+  const randomNumbers: number[] = [];
+
+  // get random position in interval
+  for (const interval of intervals) {
+    const [min, max] = interval;
+    const randomNumber = Math.random() * (max - min) + min;
+    randomNumbers.push(Math.round(randomNumber - 1));
+  }
+
+  return randomNumbers;
 }

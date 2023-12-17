@@ -1,3 +1,4 @@
+// scene types
 export type Status = "start" | "playing" | "gameOver";
 
 export type Screens = {

@@ -5,7 +5,7 @@ import Arrows from "../../assets/images/arrows.png";
 import styles from "./styles.module.scss";
 
 export default function StartModal() {
-  const { startGame, docRef, isRoot } = useMainContext();
+  const { startGame, docRef } = useMainContext();
 
   const startHandle = () => {
     startGame();
