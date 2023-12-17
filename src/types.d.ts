@@ -1,3 +1,7 @@
+export type Screens = {
+  [key: string]: Screen;
+};
+
 export type Screen = {
   horizontal: number;
   vertical: number;
@@ -5,23 +9,15 @@ export type Screen = {
   top: number;
 };
 
-// Food types
-export type FoodProps = {
-  size: number;
-  foods: FoodType[];
-  screen: Screen;
-};
-
 export type FoodType = number[];
 
 // Control types
 export type ControlProps = {
-  setFoods: (value: FoodType[]) => void;
   screen: Screen;
   screens: any;
 };
 
 // Worm types
-export type WormProps = {
-  size: number;
-};
+export type WormBody = number[][];
+
+export type Direction = "right" | "left" | "top" | "bottom";
