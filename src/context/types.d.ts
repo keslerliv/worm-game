@@ -1,4 +1,4 @@
-import { FoodType, Status } from "../types";
+import { Direction, FoodType, Status } from "../types";
 
 export type MainProviderProps = {
   children: import("react").ReactNode;
@@ -17,5 +17,7 @@ export type MainContextProps = {
   foods: FoodType[];
   screens: Screens;
   wormBody: WormBody[];
+  details: number[][];
+  moveDirection: Direction;
   changeDirectionHandle: (key: KeyboardEvent<HTMLDivElement>) => void;
 };

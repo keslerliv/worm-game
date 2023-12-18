@@ -2,13 +2,11 @@
 @import "src/styles/abstracts/typography.scss";
 @import "src/styles/abstracts/variables.scss";
 
-.food {
-  height: auto;
-  position: absolute;
+.container {
+  img {
+    position: absolute;
 
-  z-index: 1;
-  aspect-ratio: 1 / 1;
-
-  border-radius: 7px;
-  background-color: $color-secondary;
+    width: 120px !important;
+    height: auto;
+  }
 }

@@ -12,7 +12,7 @@ import {
 import {
   addWormMove,
   getLocalJson,
-  getRandomFoodPosition,
+  getRandomItemPosition,
   getRandomToken,
   isWormEating,
   setLocalJson,
@@ -32,6 +32,7 @@ export function MainProvider({ children }: MainProviderProps) {
   // scene options
   const [status, setStatus] = useState<Status>("start");
   const [screens, setScreens] = useState<Screens>({});
+  const [details, setDetails] = useState<number[][]>([]);
   const [left, setLeft] = useState(Math.round(window.screenX));
   const [top, setTop] = useState(Math.round(window.screenY));
   const [horizontal, setHorizontal] = useState(
@@ -50,9 +51,20 @@ export function MainProvider({ children }: MainProviderProps) {
 
   const startGame = useCallback(() => {
     const foodPositions = [
-      getRandomFoodPosition(screens, blockSize),
-      getRandomFoodPosition(screens, blockSize),
+      getRandomItemPosition(screens, blockSize),
+      getRandomItemPosition(screens, blockSize),
     ];
+
+    // set initial direction
+    localStorage.setItem("direction", "right");
+    setMoveDirection("right");
+
+    // set initial status
+    localStorage.setItem("status", "playing");
+    setStatus("playing");
+
+    // set main screen
+    localStorage.setItem("starter", screenToken.toString());
 
     // define start worm body
     const startWormX = Math.round(screens[screenToken].left / blockSize);
@@ -62,12 +74,16 @@ export function MainProvider({ children }: MainProviderProps) {
       [startWormX + 6, startWormY + 7],
       [startWormX + 5, startWormY + 7],
     ];
+    const details = [
+      getRandomItemPosition(screens, blockSize),
+      getRandomItemPosition(screens, blockSize),
+      getRandomItemPosition(screens, blockSize),
+      getRandomItemPosition(screens, blockSize),
+    ];
 
-    localStorage.setItem("status", "playing");
-    setStatus("playing");
-
-    // set main screen
-    localStorage.setItem("starter", screenToken.toString());
+    // set initial details
+    setLocalJson("details", details);
+    setDetails(details);
 
     setLocalJson("worm", wormBody);
     setWormBody(wormBody);
@@ -80,15 +96,19 @@ export function MainProvider({ children }: MainProviderProps) {
     (key: KeyboardEvent<HTMLDivElement>) => {
       if (key.key === "w" && moveDirection !== "bottom") {
         setMoveDirection("top");
+        localStorage.setItem("direction", "top");
       }
       if (key.key === "a" && moveDirection !== "right") {
         setMoveDirection("left");
+        localStorage.setItem("direction", "left");
       }
       if (key.key === "d" && moveDirection !== "left") {
         setMoveDirection("right");
+        localStorage.setItem("direction", "right");
       }
       if (key.key === "s" && moveDirection !== "top") {
         setMoveDirection("bottom");
+        localStorage.setItem("direction", "bottom");
       }
     },
     [moveDirection]
@@ -97,7 +117,7 @@ export function MainProvider({ children }: MainProviderProps) {
   const addNewFood = useCallback(
     (foods: FoodType[]) => {
       const newFood: number[][] = foods;
-      newFood.push(getRandomFoodPosition(screens, blockSize));
+      newFood.push(getRandomItemPosition(screens, blockSize));
       setLocalJson("foods", newFood);
       setFoods(newFood);
     },
@@ -138,38 +158,40 @@ export function MainProvider({ children }: MainProviderProps) {
   // add worm move by time
   useEffect(() => {
     const wormCallback = () => {
-      const starter = localStorage.getItem("starter");
+      if (status === "playing") {
+        const starter = localStorage.getItem("starter");
 
-      // add worm move
-      if (starter === screenToken.toString()) {
-        const newBody = addWormMove(wormBody, moveDirection);
-        setLocalJson("worm", newBody);
-        setWormBody(newBody);
-      }
+        // add worm move
+        if (starter === screenToken.toString()) {
+          const newBody = addWormMove(wormBody, moveDirection);
+          setLocalJson("worm", newBody);
+          setWormBody(newBody);
+        }
 
-      // verify is valid move
-      const isValid = verifyMove(wormBody, screens, blockSize);
-      if (!isValid) {
-        setMoveDirection("right");
+        // verify is valid move
+        const isValid = verifyMove(wormBody, screens, blockSize);
+        if (!isValid) {
+          setMoveDirection("right");
 
-        setStatus("gameOver");
-        localStorage.setItem("status", "gameOver");
-      }
+          setStatus("gameOver");
+          localStorage.setItem("status", "gameOver");
+        }
 
-      // add worm eat action
-      const cleanFoods: number[][] = [...foods];
-      const ateFood: number | boolean = isWormEating(wormBody, foods);
-      if (
-        starter === screenToken.toString() &&
-        ateFood !== false &&
-        ateFood !== true
-      ) {
-        cleanFoods.splice(ateFood, 1);
-        setLocalJson("foods", cleanFoods);
-        setFoods(cleanFoods);
+        // add worm eat action
+        const cleanFoods: number[][] = [...foods];
+        const ateFood: number | boolean = isWormEating(wormBody, foods);
+        if (
+          starter === screenToken.toString() &&
+          ateFood !== false &&
+          ateFood !== true
+        ) {
+          cleanFoods.splice(ateFood, 1);
+          setLocalJson("foods", cleanFoods);
+          setFoods(cleanFoods);
 
-        addNewFood(cleanFoods);
-        addNewBlock();
+          addNewFood(cleanFoods);
+          addNewBlock();
+        }
       }
     };
 
@@ -204,10 +226,22 @@ export function MainProvider({ children }: MainProviderProps) {
     const handleStorageChange = () => {
       setFoods(getLocalJson("foods") ?? []);
       setWormBody(getLocalJson("worm") ?? []);
+      setDetails(getLocalJson("details"));
 
       const status = localStorage.getItem("status");
       if (status === "gameOver" || status === "start" || status === "playing")
         setStatus(status);
+
+      const direction = localStorage.getItem("direction");
+      if (
+        direction === "left" ||
+        direction === "right" ||
+        direction === "top" ||
+        direction === "bottom"
+      ) {
+        setMoveDirection(direction);
+        localStorage.setItem("direction", direction);
+      }
 
       const newScreens = getLocalJson("screens");
       newScreens[screenToken] = screens[screenToken];
@@ -237,6 +271,8 @@ export function MainProvider({ children }: MainProviderProps) {
       foods,
       screens,
       wormBody,
+      details,
+      moveDirection,
       changeDirectionHandle,
     }),
     [
@@ -252,6 +288,8 @@ export function MainProvider({ children }: MainProviderProps) {
       foods,
       screens,
       wormBody,
+      details,
+      moveDirection,
       changeDirectionHandle,
     ]
   );

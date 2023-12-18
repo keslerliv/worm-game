@@ -20,7 +20,7 @@ export function setLocalJson(item: string, value: any) {
 /**
  * food auxiar functions
  */
-export function getRandomFoodPosition(screens: Screens, size: number) {
+export function getRandomItemPosition(screens: Screens, size: number) {
   const keys = Object.keys(screens);
 
   const locations: number[][][] = [];
@@ -129,6 +129,16 @@ export function isWormEating(body: WormBody, foods: FoodType[]) {
     return value;
   }
   return false;
+}
+
+export function getBlockDirection(worm: WormBody, index: number) {
+  const before = worm[index - 1];
+  const current = worm[index];
+
+  if (before[0] > current[0]) return "right";
+  if (before[1] > current[1]) return "bottom";
+  if (before[0] < current[0]) return "left";
+  return "top";
 }
 
 /**

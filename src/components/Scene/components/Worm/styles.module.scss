@@ -14,4 +14,77 @@
   aspect-ratio: 1 / 1;
 
   background-color: $color-primary;
+
+  &.right {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+  }
+
+  &.left {
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
+
+  &.bottom {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+  }
+
+  &.top {
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
+
+  // Worm face style
+  &.rightFace,
+  &.leftFace,
+  &.bottomFace,
+  &.topFace {
+    z-index: 1;
+
+    &::after {
+      position: absolute;
+      content: url("../../../../assets/images/snake-face.svg");
+    }
+  }
+
+  &.rightFace {
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    &::after {
+      top: -3px;
+      right: -21px;
+      transform: rotate(0deg);
+    }
+  }
+
+  &.leftFace {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    &::after {
+      bottom: -4px;
+      left: -20px;
+      transform: rotate(180deg);
+    }
+  }
+
+  &.bottomFace {
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    &::after {
+      bottom: -14px;
+      left: -15px;
+      transform: rotate(90deg);
+    }
+  }
+
+  &.topFace {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    &::after {
+      top: -15px;
+      right: -16px;
+      transform: rotate(-90deg);
+    }
+  }
 }
