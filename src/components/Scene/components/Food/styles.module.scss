@@ -10,5 +10,12 @@
   aspect-ratio: 1 / 1;
 
   border-radius: 7px;
-  background-color: $color-secondary;
+
+  svg {
+    margin-top: -8px;
+    margin-left: -8px;
+
+    height: 45px !important;
+    width: 45px !important;
+  }
 }
