@@ -1,4 +1,4 @@
-# Hand Control
+# Worm Game
 
 This is a custom React project to manipulate multiple screens with **Local Storage**.
 
